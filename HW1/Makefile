@@ -1,7 +1,7 @@
 .SUFFIXES:
 
 # Compiler to use
-CC = clang
+CC = icx
 
 # Flags passed to the compiler
 CFLAGS = -Wall -O0
@@ -13,7 +13,10 @@ LDLIBS = -lm
 SRCS := $(wildcard src/3.*.c)
 BINS := $(patsubst src/%.c,bin/%,$(SRCS))
 
-all: $(BINS)
+all: $(BINS) sobel_orig
+
+sobel_orig: src/sobel_orig.c
+	$(CC) $(CFLAGS) $< -o $@ $(LDLIBS)
 
 # Build bin/3.X from src/3.X.c (creates bin/ if missing)
 bin/3.%: src/3.%.c | bin
