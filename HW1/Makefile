@@ -30,7 +30,7 @@ bin:
 	@:
 
 clean:
-	rm -f $(BINS) *.jpg output_sobel.grey
+	rm -f $(BINS) *.jpg sobel_orig output_sobel.grey
 
 .PHONY: all clean
 
