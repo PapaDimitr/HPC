@@ -98,17 +98,17 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
     		int conv1H = 
 			- sobel1
             + sobel3 
-            - sobel4 - sobel4 
-            + sobel6 + sobel6  
+            - (sobel4 << 1) 
+            + (sobel6 << 1)  
             - sobel7
             + sobel9; 	
 			
 			int conv1V = 
             + sobel1
-            + sobel2 + sobel2
+            + (sobel2 << 1)
             + sobel3 
             - sobel7
-            - sobel8 - sobel8 
+            - (sobel8 << 1) 
             - sobel9;
 
 			p = pow2(conv1H) + pow2(conv1V);
@@ -130,17 +130,17 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 			int conv2H = 
 			- sobel2                       
     		+ sobel10                         
-    		- sobel5 - sobel5                        
-    		+ sobel11 + sobel11                       
+    		- (sobel5 << 1)                        
+    		+ (sobel11 << 1)                       
     		- sobel8                         
     		+ sobel12;
 
 			int conv2V = 
 			+ sobel2                         
-    		+ sobel3 + sobel3                         
+    		+ (sobel3 << 1)                         
     		+ sobel10                                                 
     		- sobel8                      
-    		- sobel9 - sobel9                     
+    		- (sobel9 << 1)                     
     		- sobel12;
 
 			p = pow2(conv2H) + pow2(conv2V);
@@ -161,7 +161,7 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 
 	/* Now run through the output and the golden output to calculate *
 	 * the MSE and then the PSNR.									 */
-  
+
 	PSNR /= (double)(SIZE*SIZE);
 	PSNR = 10*log10(65536/PSNR);
 
@@ -173,7 +173,7 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 			(double) (tv2.tv_nsec - tv1.tv_nsec) / 1000000000.0 +
 			(double) (tv2.tv_sec - tv1.tv_sec));
 
-  
+
 	/* Write the output file */
 	fwrite(output, sizeof(unsigned char), SIZE*SIZE, f_out);
 	fclose(f_out);

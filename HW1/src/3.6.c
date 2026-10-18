@@ -99,92 +99,92 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 	/* For each pixel of the output image */
 
 	for (i=1; i<SIZE-1; i+=1) {
-		int tmp1 = i*SIZE;
-		output[tmp1] = 0;
-		output[tmp1 + SIZE - 1] = 0;
+		int iSize = i*SIZE;
+		output[iSize] = 0;
+		output[iSize + SIZE - 1] = 0;
 		for (j=1; j<SIZE-1; j+=2) {
 			/* Apply the sobel filter and calculate the magnitude *
 			 * of the derivative.	*/	
                                  
-			unsigned char temp1 = input[(i-1)*SIZE + j-1];
-			unsigned char temp2 = input[(i-1)*SIZE + j  ];
-			unsigned char temp3 = input[(i-1)*SIZE + j+1];
-			unsigned char temp4 = input[ i   *SIZE + j-1];
-			unsigned char temp5 = input[ i   *SIZE + j  ];
-			unsigned char temp6 = input[ i   *SIZE + j+1];
-			unsigned char temp7 = input[(i+1)*SIZE + j-1];
-			unsigned char temp8 = input[(i+1)*SIZE + j  ];
-			unsigned char temp9 = input[(i+1)*SIZE + j+1];
+			unsigned char sobel1 = input[(i-1)*SIZE + j-1];
+			unsigned char sobel2 = input[(i-1)*SIZE + j  ];
+			unsigned char sobel3 = input[(i-1)*SIZE + j+1];
+			unsigned char sobel4 = input[ i   *SIZE + j-1];
+			unsigned char sobel5 = input[ i   *SIZE + j  ];
+			unsigned char sobel6 = input[ i   *SIZE + j+1];
+			unsigned char sobel7 = input[(i+1)*SIZE + j-1];
+			unsigned char sobel8 = input[(i+1)*SIZE + j  ];
+			unsigned char sobel9 = input[(i+1)*SIZE + j+1];
 			
     		int conv1H = 
-			temp1 * horiz_operator[0][0] +                          
-    		temp2 * horiz_operator[0][1] +                          
-    		temp3 * horiz_operator[0][2] +                          
-    		temp4 * horiz_operator[1][0] +                          
-    		temp5 * horiz_operator[1][1] +                          
-    		temp6 * horiz_operator[1][2] +                          
-    		temp7 * horiz_operator[2][0] +                          
-    		temp8 * horiz_operator[2][1] +                          
-    		temp9 * horiz_operator[2][2]; 	
+			sobel1 * horiz_operator[0][0] +                          
+    		sobel2 * horiz_operator[0][1] +                          
+    		sobel3 * horiz_operator[0][2] +                          
+    		sobel4 * horiz_operator[1][0] +                          
+    		sobel5 * horiz_operator[1][1] +                          
+    		sobel6 * horiz_operator[1][2] +                          
+    		sobel7 * horiz_operator[2][0] +                          
+    		sobel8 * horiz_operator[2][1] +                          
+    		sobel9 * horiz_operator[2][2]; 	
 			
 			int conv1V = 
-			temp1 * vert_operator[0][0] +                          
-    		temp2 * vert_operator[0][1] +                          
-    		temp3 * vert_operator[0][2] +                          
-    		temp4 * vert_operator[1][0] +                          
-    		temp5 * vert_operator[1][1] +                          
-    		temp6 * vert_operator[1][2] +                          
-    		temp7 * vert_operator[2][0] +                          
-    		temp8 * vert_operator[2][1] +                          
-    		temp9 * vert_operator[2][2];
+			sobel1 * vert_operator[0][0] +                          
+    		sobel2 * vert_operator[0][1] +                          
+    		sobel3 * vert_operator[0][2] +                          
+    		sobel4 * vert_operator[1][0] +                          
+    		sobel5 * vert_operator[1][1] +                          
+    		sobel6 * vert_operator[1][2] +                          
+    		sobel7 * vert_operator[2][0] +                          
+    		sobel8 * vert_operator[2][1] +                          
+    		sobel9 * vert_operator[2][2];
 			p = pow2(conv1H) + pow2(conv1V);
 			res = (int)sqrt(p);
 			/* If the resulting value is greater than 255, clip it *
 			 * to 255.											   */
 			if (res > 255)
-				output[tmp1 + j] = 255;      
+				output[iSize + j] = 255;      
 			else
-				output[tmp1 + j] = (unsigned char)res;
+				output[iSize + j] = (unsigned char)res;
 
-			t = pow2((output[tmp1+j] - golden[tmp1+j]));
+			t = pow2((output[iSize+j] - golden[iSize+j]));
 			PSNR += t;
 
-			unsigned char temp10 = input[(i-1)*SIZE + (j+2)];
-			unsigned char temp11 = input[(i)*SIZE + (j+2)];
-			unsigned char temp12 = input[(i+1)*SIZE + (j+2)];
+			unsigned char sobel10 = input[(i-1)*SIZE + (j+2)];
+			unsigned char sobel11 = input[(i)*SIZE + (j+2)];
+			unsigned char sobel12 = input[(i+1)*SIZE + (j+2)];
 
 			int conv2H = 
-			temp2 * horiz_operator[0][0] +                          
-    		temp3 * horiz_operator[0][1] +                          
-    		temp10 * horiz_operator[0][2] +                          
-    		temp5 * horiz_operator[1][0] +                          
-    		temp6 * horiz_operator[1][1] +                          
-    		temp11 * horiz_operator[1][2] +                          
-    		temp8 * horiz_operator[2][0] +                          
-    		temp9 * horiz_operator[2][1] +                          
-    		temp12 * horiz_operator[2][2];
+			sobel2 * horiz_operator[0][0] +                          
+    		sobel3 * horiz_operator[0][1] +                          
+    		sobel10 * horiz_operator[0][2] +                          
+    		sobel5 * horiz_operator[1][0] +                          
+    		sobel6 * horiz_operator[1][1] +                          
+    		sobel11 * horiz_operator[1][2] +                          
+    		sobel8 * horiz_operator[2][0] +                          
+    		sobel9 * horiz_operator[2][1] +                          
+    		sobel12 * horiz_operator[2][2];
 
 			int conv2V = 
-			temp2 * vert_operator[0][0] +                          
-    		temp3 * vert_operator[0][1] +                          
-    		temp10 * vert_operator[0][2] +                          
-    		temp5 * vert_operator[1][0] +                          
-    		temp6 * vert_operator[1][1] +                          
-    		temp11 * vert_operator[1][2] +                          
-    		temp8 * vert_operator[2][0] +                          
-    		temp9 * vert_operator[2][1] +                          
-    		temp12 * vert_operator[2][2];
+			sobel2 * vert_operator[0][0] +                          
+    		sobel3 * vert_operator[0][1] +                          
+    		sobel10 * vert_operator[0][2] +                          
+    		sobel5 * vert_operator[1][0] +                          
+    		sobel6 * vert_operator[1][1] +                          
+    		sobel11 * vert_operator[1][2] +                          
+    		sobel8 * vert_operator[2][0] +                          
+    		sobel9 * vert_operator[2][1] +                          
+    		sobel12 * vert_operator[2][2];
 
 			p = pow2(conv2H) + pow2(conv2V);
 			res = (int)sqrt(p);
 			/* If the resulting value is greater than 255, clip it *
 			 * to 255.											   */
 			if (res > 255)
-				output[tmp1 + (j+1)] = 255;      
+				output[iSize + (j+1)] = 255;      
 			else
-				output[tmp1 + (j+1)] = (unsigned char)res;
+				output[iSize + (j+1)] = (unsigned char)res;
 
-			t = pow2((output[tmp1+(j+1)] - golden[tmp1+(j+1)]));
+			t = pow2((output[iSize+(j+1)] - golden[iSize+(j+1)]));
 			PSNR += t;
 
 		}
